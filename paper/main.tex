@@ -1,0 +1,224 @@
+\documentclass[11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,enumitem}
+\usepackage[margin=1.1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\cA}{\mathcal A}
+
+\hypersetup{pdftitle={A counterexample to a conjecture of Cerf on second-order pivots},pdfauthor={Yitzchak Shmalo}}
+
+\title{A counterexample to a conjecture of Cerf on second-order pivots}
+\author{Yitzchak Shmalo}
+\address{Einstein Institute of Mathematics, The Hebrew University of Jerusalem, Jerusalem, Israel}
+\email{yitzchak.shmalo@gmail.com}
+\date{5 November 2026}
+\subjclass[2020]{06E30, 05D40, 60K35, 60C05}
+\keywords{increasing sets, Boolean functions, pivotal coordinates, second-order pivots, random CNF, Talagrand's construction}
+
+\begin{document}
+\begin{abstract}
+For an increasing subset $A$ of $\{0,1\}^n$, Cerf considers the number $\phi_2(A)$ of pairs $(\omega,i)$ with $\omega\in A$ and $i$ a positive pivot of order at most two at $\omega$, and the analogous count $\phi_{2\setminus1}(A)$ of pivots of order exactly two. He conjectured that every maximizer of either functional contains all configurations with at least $n/2+1$ ones and no configuration with fewer than $n/2-2$ ones, which would give $\phi_2(A)\le 6\sqrt n\,2^n$. We show that the conjecture fails. For $n=10^{14}$, and more generally for every $n=h^2$ with $10\mid h$ and $h>2{,}592{,}000$, there is an increasing set with $\phi_{2\setminus1}(A)\ge 2^n n/259200$, while every increasing set inside the conjectured band has $\phi_2(A)\le 10\sqrt n\,2^n$. Consequently no maximizer of either functional lies in the band. The set is a random monotone CNF of the kind used by Talagrand, and the proof is a first and second moment count over the clauses.
+\end{abstract}
+\maketitle
+
+\section{Introduction}
+
+Let $\Omega_n=\{0,1\}^n$ with the coordinatewise order, and identify a configuration $\omega$ with its support $\{i:\omega(i)=1\}$. For $\omega\in\Omega_n$ and $i\in\{1,\dots,n\}$ write $\omega_i$ and $\omega^i$ for the configurations obtained from $\omega$ by setting the $i$-th coordinate to $0$ and to $1$. A set $A\subset\Omega_n$ is increasing if $\omega\in A$ and $\omega\le\eta$ imply $\eta\in A$. The positive pivots of $A$ at $\omega$ are
+\[
+P^+(A,\omega)=\{i:\ \omega_i\notin A,\ \omega^i\in A\}.
+\]
+In his monograph on the percolation probability at criticality \cite{C}, Cerf defines positive pivots of higher order: for $k\ge1$ and $I\subset\{1,\dots,n\}$ let $\omega_I$ be $\omega$ with every coordinate in $I$ set to $0$, and
+\begin{equation}\label{eq:Pk}
+P_k^+(A,\omega)=\bigl\{i:\ \exists I,\ |I|\le k-1,\ \omega(j)=1\ \text{for all } j\in I,\ i\in P^+(A,\omega_I)\bigr\}
+\end{equation}
+\cite[(49.1)]{C}. Thus $P_1^+=P^+$, and $P_2^+(A,\omega)$ consists of the first pivots at $\omega$ together with the first pivots at the configurations obtained by switching off one occupied coordinate. Cerf studies the functionals
+\[
+\phi_{2\setminus1}(A)=\sum_{\omega\in A}\bigl|P_2^+(A,\omega)\setminus P_1^+(A,\omega)\bigr|,\qquad
+\phi_2(A)=\sum_{\omega\in A}\bigl|P_2^+(A,\omega)\bigr|
+\]
+and their maxima $M_{2\setminus1}(n)$ and $M_2(n)$ over increasing sets \cite[(51.1), (52.1)]{C}. For first-order pivots the corresponding maximum is attained by small perturbations of the majority set $\{\omega:|\omega|>n/2\}$ and is of order $\sqrt n\,2^n$ \cite[\S50]{C}. Exhaustive computations for $n\le7$ led Cerf to the following statement \cite[Conjecture~53.1]{C}.
+
+\begin{conjecture}[Cerf]\label{conj}
+Let $n\ge1$. If $A^*$ is an increasing subset of $\Omega_n$ which realizes the maximum of $\phi_{2\setminus1}$ or of $\phi_2$, then
+\[
+\{\omega:\ |\omega|\ge n/2+1\}\subset A^*\subset\{\omega:\ |\omega|\ge n/2-2\}.
+\]
+\end{conjecture}
+
+The conjecture would give $\max(M_{2\setminus1}(n),M_2(n))\le 6\sqrt n\,2^n$, that is, $\E|P_2^+(A)|\le6\sqrt n$ under the uniform measure for every increasing $A$ \cite[(53.2)]{C}, the analogue of the first-order bound. We show that it is false.
+
+\begin{theorem}\label{thm:main}
+Let $n=h^2$ where $h$ is divisible by $10$ and $h>2{,}592{,}000$; for instance $n=10^{14}$. There is an increasing set $A\subset\Omega_n$ with
+\[
+2^{-n}\phi_{2\setminus1}(A)\ \ge\ \frac{n}{259200}\ >\ 10\sqrt n .
+\]
+Every increasing set $B$ with $\{|\omega|\ge n/2+1\}\subset B\subset\{|\omega|\ge n/2-2\}$ satisfies $2^{-n}\phi_2(B)\le10\sqrt n$. Consequently, for this $n$, no maximizer of $\phi_{2\setminus1}$ and no maximizer of $\phi_2$ satisfies the inclusions of Conjecture~\ref{conj}.
+\end{theorem}
+
+Since $\phi_2\ge\phi_{2\setminus1}$, the last sentence follows from the two inequalities: a maximizer $A^*$ of either functional has $2^{-n}F(A^*)\ge2^{-n}F(A)>10\sqrt n$, which no set in the band attains.
+
+The set $A$ is a random monotone CNF with $2^r$ clauses of $r$ coordinates each, $r=h/10$. This is the construction Talagrand used to exhibit an increasing set whose first-order pivot count is of order $\sqrt n$ on a set of probability bounded below \cite{T}. In Section~62 of \cite{C}, Cerf adapts Talagrand's set to second-order pivots and argues that $\Pp(|P_2^+(A^\circ)|\ge cn)\ge c$ for large $n$; his Proposition~62.1 records a lower bound on $M_2(n)$ of order $n$. A bound of the form $\E|P_2^+(A)|\ge cn$ is incompatible with the estimate (53.2) of \cite{C} for large $n$, so Section~62 already points to the failure of the conjecture, although it does not return to Conjecture~53.1. The present note gives a complete argument with explicit constants and an explicit dimension. Two points need care. Coordinates are sampled with replacement, so a clause may contain a coordinate several times, and a clause whose positive part is a single repeated coordinate still produces a first pivot; and a pivot of order two must be certified through a partner coordinate whose removal keeps the configuration in $A$. The pair witness of Lemma~\ref{lem:pair} and the clause graph of Section~\ref{sec:graph} handle both.
+
+There is also a small ambiguity in \eqref{eq:Pk}. Read literally, the definition allows a coordinate $i$ with $\omega(i)=0$ to belong to $P_2^+(A,\omega)$: take $j$ occupied with $\omega_j\notin A$ but $(\omega_j)^i\in A$. The tables in \cite[\S\S51--52]{C} agree instead with the restriction of $P_2^+(A,\omega)$ to occupied coordinates. For instance, for $A=\{10,01,11\}$ the literal reading gives $\phi_2(A)=6$ and the occupied reading gives $4$; for $n\le5$ the occupied reading reproduces the maxima $1,4,9,24,62$ of $\phi_2$ and $0,2,6,12,38$ of $\phi_{2\setminus1}$ (Section~\ref{sec:comp}). Theorem~\ref{thm:main} holds under both readings: the lower bound counts only occupied pivots and the upper bound only uses $|P_2^+(A,\omega)|\le n$.
+
+\section{Pivots of order two}
+
+Let $A$ be increasing and $\omega\in A$. For $i\notin\omega$ we have $\omega_i=\omega\in A$, so
+\begin{equation}\label{eq:P1}
+P_1^+(A,\omega)=\{i\in\omega:\ \omega\setminus\{i\}\notin A\}.
+\end{equation}
+
+\begin{lemma}\label{lem:pair}
+Let $A$ be increasing, $\omega\in A$, and let $i\ne j$ be occupied coordinates of $\omega$ such that $\omega\setminus\{j\}\in A$ and $\omega\setminus\{i,j\}\notin A$. Then $i\in P_2^+(A,\omega)$. If moreover $\omega\setminus\{i\}\in A$, then $i\notin P_1^+(A,\omega)$.
+\end{lemma}
+
+\begin{proof}
+Take $I=\{j\}$ in \eqref{eq:Pk}; $j$ is occupied. With $\eta=\omega_j=\omega\setminus\{j\}$ we have $\eta^i=\eta\in A$ because $i\in\eta$, and $\eta_i=\omega\setminus\{i,j\}\notin A$. So $i\in P^+(A,\eta)\subset P_2^+(A,\omega)$. The second statement is \eqref{eq:P1}.
+\end{proof}
+
+Conversely, an occupied $i\in P_2^+(A,\omega)\setminus P_1^+(A,\omega)$ always has such a partner $j$, but only the direction of Lemma~\ref{lem:pair} is used below. The program in Section~\ref{sec:comp} checks on every increasing set with $n\le5$ that the occupied part of $P_2^+(A,\omega)$ is exactly the set of first pivots together with the coordinates having a partner as in the lemma.
+
+\section{The bound inside the band}
+
+\begin{lemma}\label{lem:band}
+Let $n=2d\ge2$ and let $B$ be increasing with $\{|\omega|\ge d+1\}\subset B\subset\{|\omega|\ge d-2\}$. Then $2^{-n}\phi_2(B)\le10\sqrt n$, under either reading of \eqref{eq:Pk}.
+\end{lemma}
+
+\begin{proof}
+Let $\omega\in B$ with $|\omega|\ge d+3$. Switching off at most one occupied coordinate in \eqref{eq:Pk}, and then testing one more coordinate at $0$, leaves a configuration with at least $d+1$ ones, which lies in $B$. Hence $P_2^+(B,\omega)=\emptyset$. Every $\omega\in B$ has $|\omega|\ge d-2$, so only the five levels $d-2\le|\omega|\le d+2$ contribute. Each level has at most $\binom{2d}{d}$ elements and each contributes at most $n$, so $\phi_2(B)\le5n\binom{2d}{d}$. Put $b_d=\binom{2d}{d}4^{-d}$. Then $b_0=1$ and $b_{d+1}/b_d=(2d+1)/(2d+2)$, and $b_d\le(d+1)^{-1/2}$ follows by induction from $(2d+1)^2(d+2)\le4(d+1)^3$, whose difference is $3d+2$. Since $n\le4(d+1)$, we get $b_d\le2/\sqrt n$ and $2^{-n}\phi_2(B)\le5n\cdot2/\sqrt n=10\sqrt n$.
+\end{proof}
+
+The constant is cruder than the $6\sqrt n$ of \cite[(53.2)]{C} because five levels can contribute rather than four, and we use the elementary bound on $b_d$.
+
+\section{A random monotone CNF}\label{sec:cnf}
+
+Fix $h$ divisible by $10$ with $h\ge30$, and put
+\[
+n=h^2,\qquad r=h/10,\qquad M=2^r,
+\]
+so that $n=100r^2$. Let $Y=(Y_{a,b})_{1\le a\le r,\,1\le b\le M}$ be independent and uniform on $\{1,\dots,n\}$; clause $b$ is the list $(Y_{1,b},\dots,Y_{r,b})$, repetitions allowed. Let
+\[
+A_Y=\{\omega:\ \text{for every } b \text{ there is } a \text{ with } Y_{a,b}\in\omega\}.
+\]
+For each $Y$ this is an increasing set. All probabilities below are over $Y$ on a finite space; no array is constructed explicitly.
+
+Fix $\omega$ with $s=|\omega|$ and $|s-n/2|\le h$, and put $z=1-s/n$. Then $|2z-1|\le2/h$, and $n/3\le s-1<s\le2n/3$. A clause misses $\omega$ with probability $q_0=z^r$. The events that the individual clauses meet $\omega$ are independent, so conditionally on $\omega\in A_Y$ the clauses remain independent, each distributed as a clause conditioned to meet $\omega$. We write $\Pp_\omega$ and $\E_\omega$ for this conditional law.
+
+We use two elementary inequalities: $(1+u)^k\le(1-ku)^{-1}$ for $u\ge0$ and $ku<1$, from $\binom kj\le k^j$; and Bernoulli's inequality $(1-u)^k\ge1-ku$ for $0\le u\le1$. Since $r\cdot2/h=1/5$ and $r(2/h+2/n)<1/4$,
+\begin{equation}\label{eq:powers}
+(2z)^a\le\tfrac54\ \ (0\le a\le r),\qquad (2z)^{r-2}\ge\tfrac45,\qquad (2z+2/n)^{r-1}\le\tfrac43 .
+\end{equation}
+In particular $Mq_0=(2z)^r\le5/4$ and $q_0\le1/2$, so, using $\log(1-u)\ge-2u$ on $[0,1/2]$ and $e^4<81$,
+\begin{equation}\label{eq:inA}
+\Pp(\omega\in A_Y)=(1-q_0)^M\ge e^{-2Mq_0}\ge e^{-4}>\tfrac1{81}.
+\end{equation}
+
+\section{The clause graph}\label{sec:graph}
+
+Fix $Y$ with $\omega\in A_Y$. For a clause $b$, its positive positions are the $a$ with $Y_{a,b}\in\omega$. Let $S$ be the set of coordinates $i$ such that, for some clause, the set of values at its positive positions is $\{i\}$; the clause may contain $i$ several times. By \eqref{eq:P1}, $S=P_1^+(A_Y,\omega)$: removing $i$ from $\omega$ empties some clause exactly when such a clause exists.
+
+Let $G$ be the multigraph on $\omega$ with one edge $\{i,j\}$ for each clause that has exactly two positive positions, carrying two distinct values $i\ne j$. Let $C$ be the set of vertices covered by edges, call an edge bad if one of its endpoints lies in $S$, and let $B$ be the number of bad edges counted with multiplicity.
+
+\begin{lemma}\label{lem:graph}
+$|P_2^+(A_Y,\omega)\setminus P_1^+(A_Y,\omega)|\ge|C|-2B$.
+\end{lemma}
+
+\begin{proof}
+Let $V$ be the set of endpoints of bad edges; $|V|\le2B$. Let $i\in C\setminus V$ and choose an edge $\{i,j\}$, coming from clause $b$. Neither $i$ nor $j$ is in $S$, so $\omega\setminus\{i\}$ and $\omega\setminus\{j\}$ lie in $A_Y$. The positive part of clause $b$ is $\{i,j\}$, so $\omega\setminus\{i,j\}\notin A_Y$. By Lemma~\ref{lem:pair}, $i\in P_2^+\setminus P_1^+$.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+We keep the notation of Section~\ref{sec:cnf}, with $\omega$ fixed in the central range.
+
+\emph{Coverage.} For $i\in\omega$, a clause supplies an edge at $i$ with probability
+\[
+a_i=r(r-1)\,\frac{s-1}{n^2}\,z^{r-2}:
+\]
+choose the two positive positions, which of them carries $i$, and the other value among the $s-1$ remaining coordinates of $\omega$, the other $r-2$ positions falling outside $\omega$. Under $\Pp_\omega$ the probability is $t_i=a_i/(1-q_0)\in[a_i,2a_i]$. By \eqref{eq:powers}, $r(r-1)\ge r^2/2$ and $(s-1)/n\in[1/3,2/3]$,
+\[
+Mt_i\ge Ma_i=4r(r-1)\frac{s-1}{n^2}(2z)^{r-2}\ge\frac{8}{15}\frac{r^2}{n},\qquad Mt_i\le\frac{32}{3}\frac{r^2}{n}=\frac{8}{75}<1 .
+\]
+The clauses being independent under $\Pp_\omega$, the Bonferroni inequality gives $\Pp_\omega(i\in C)\ge Mt_i-\binom M2t_i^2\ge Mt_i(1-Mt_i/2)\ge Mt_i/2\ge r^2/(4n)$, and summing over the $s\ge n/3$ coordinates of $\omega$,
+\begin{equation}\label{eq:C}
+\E_\omega|C|\ge r^2/12 .
+\end{equation}
+
+\emph{Bad edges.} The probability that a clause has exactly one distinct positive value, and that value is a given $i\in\omega$, is $(z+1/n)^r-z^r\le(r/n)(z+1/n)^{r-1}$. These events are disjoint over $i$, so the probability $q_S$ that a clause is a singleton clause satisfies $q_S\le(sr/n)(z+1/n)^{r-1}$, while a clause supplies an edge with probability $q_E=\binom r2(s/n)^2(1-1/s)z^{r-2}$. By \eqref{eq:powers}, with $Q_S=q_S/(1-q_0)\le2q_S$ and $Q_E=q_E/(1-q_0)\le2q_E$,
+\[
+MQ_S\le2\cdot\frac{2}{3}r\cdot2\cdot\frac43=\frac{32}{9}r<6r,\qquad MQ_E\le2\cdot\frac{r^2}{2}\cdot\frac49\cdot4\cdot\frac54<4r^2 .
+\]
+A clause that supplies an edge is not a singleton clause. Fix an edge clause $b$ and one of its two endpoints $e$; every other clause is independent of $b$ under $\Pp_\omega$ and, by symmetry among the coordinates of $\omega$, is a singleton clause at $e$ with probability $Q_S/s$. A union bound over the edge clause, its two endpoints and the other $M-1$ clauses gives
+\begin{equation}\label{eq:B}
+\E_\omega B\le MQ_E\cdot2(M-1)\frac{Q_S}{s}\le4r^2\cdot6r\cdot\frac{2\cdot3}{n}=\frac{144r^3}{n}.
+\end{equation}
+No independence between different pivot indicators is used, and repeated edges are counted in $B$ with multiplicity.
+
+\emph{Conclusion.} By Lemma~\ref{lem:graph}, \eqref{eq:C} and \eqref{eq:B},
+\[
+\E_\omega\bigl|P_2^+(A_Y,\omega)\setminus P_1^+(A_Y,\omega)\bigr|\ge\frac{r^2}{12}-\frac{288r^3}{n}\ge\frac{r^2}{24},
+\]
+the last step because $n=100r^2\ge6912r$. Now let $\omega$ be uniform on $\Omega_n$ and independent of $Y$. Its size has mean $n/2$ and variance $n/4=h^2/4$, so by Chebyshev's inequality $\Pp(||\omega|-n/2|\le h)\ge3/4$. Combining with \eqref{eq:inA},
+\[
+\E_Y\bigl[2^{-n}\phi_{2\setminus1}(A_Y)\bigr]=\E_{\omega}\E_Y\Bigl[\mathbf 1_{\omega\in A_Y}\bigl|P_2^+(A_Y,\omega)\setminus P_1^+(A_Y,\omega)\bigr|\Bigr]\ge\frac34\cdot\frac1{81}\cdot\frac{r^2}{24}=\frac{r^2}{2592}=\frac{n}{259200}.
+\]
+All sums are finite. Hence some array $Y_0$ satisfies $2^{-n}\phi_{2\setminus1}(A_{Y_0})\ge n/259200$. Finally, $n/259200>10\sqrt n$ exactly when $h>2{,}592{,}000$, and Lemma~\ref{lem:band} applies because $n$ is even. This proves Theorem~\ref{thm:main}. \qed
+
+\begin{remark}
+The argument gives an increasing set with $\E|P_2^+(A)\setminus P_1^+(A)|\ge cn$ for an absolute $c>0$ along $n=h^2$, $10\mid h$, so $M_{2\setminus1}(n)$ and $M_2(n)$ are of order $n2^n$ along this sequence, the trivial upper bound being $n2^n$. The constants have not been optimized, and we do not know the smallest dimension at which the conjecture fails; it holds for $n\le7$ \cite{C}.
+\end{remark}
+
+\section{Computations}\label{sec:comp}
+
+The program \texttt{code/checks.py} in the repository \cite{code} uses only the Python standard library and runs in a few seconds. It enumerates the $3,6,20,168,7581$ increasing subsets of $\Omega_n$ for $n=1,\dots,5$ and computes both functionals under both readings of \eqref{eq:Pk}. The literal reading gives the maxima $\phi_2=1,6,15,36,100$ and $\phi_{2\setminus1}=0,4,12,24,76$; the occupied reading gives $1,4,9,24,62$ and $0,2,6,12,38$, the values in the tables of \cite{C}. In every case every maximizer lies in the band, in agreement with Cerf's verification for $n\le7$. The program also checks Lemma~\ref{lem:graph} on all $729$ arrays with $n=3$, $r=2$, $M=3$, which give $2640$ pairs $(Y,\omega)$ with $\omega\in A_Y$, and checks the rational inequalities used above for $h=10^7$ and $h=2{,}592{,}010$. The Lean~4 file \texttt{lean/Certificate.lean} proves the deterministic step of Lemmas~\ref{lem:pair} and~\ref{lem:graph} for arbitrary clause and coordinate types and the numerical margins at $h=10^7$ with Mathlib's \texttt{norm\_num}; the probabilistic estimates are not formalized.
+
+\section*{Acknowledgements and funding}
+The research presented in this paper was supported by the European Research
+Council (ERC) under the European Union's Horizon Europe research and
+innovation programme (grant agreement No.~101041711), by the Simons
+Foundation as part of the Collaboration on the Mathematical and Scientific
+Foundations of Deep Learning, by Heights Labs, by Convex Nexus Capital, by
+the Israel Science Foundation (grant number 2258/19), and by the Israel
+Science Foundation (ISF Grant 4101/25). Computational resources were
+provided in part by Google Cloud through its education credits program
+(credit 530550103).
+
+\section*{Declaration of competing interest}
+The author holds equity in Heights Labs and in Convex Nexus Capital and
+has a management role at Convex Nexus Capital. These entities are included
+in the funding declaration above.
+
+\section*{Declaration of generative AI and AI-assisted technologies}
+The paper comes out of Math Brain, an ongoing project on the use of AI systems for research mathematics. In October 2026 OpenAI GPT models, running as research tasks of that project, gave the proof of Theorem~\ref{thm:main} at $n=10^{14}$, including the clause graph and the treatment of repeated coordinates, and wrote the Lean file and the first version of the verification programs. Claude (Anthropic) checked the proof independently in October 2026; in November 2026 Claude Opus~5.5, working in Claude Code, extended the statement to the dimensions $n=h^2$ of Theorem~\ref{thm:main}, rewrote the verification program and wrote the paper. The author directed the work and is responsible for the content of the paper and for decisions concerning its dissemination.
+
+\section*{Data availability}
+No data were used. The code is available at\\ \url{https://github.com/yspennstate/second-order-pivots-cerf-conjecture}.
+
+\begin{thebibliography}{10}
+
+\bibitem{C}
+R.~Cerf, $\theta(p_c,\mathbb Z^d)=0$?, arXiv:2608.23661v1, 2026.
+
+\bibitem{T}
+M.~Talagrand, How much are increasing sets positively correlated?, \emph{Combinatorica} \textbf{16} (1996), 243--258.
+
+\bibitem{code}
+Y.~Shmalo, Code for ``A counterexample to a conjecture of Cerf on second-order pivots'', \url{https://github.com/yspennstate/second-order-pivots-cerf-conjecture}, 2026.
+
+\end{thebibliography}
+\end{document}
